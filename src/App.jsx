@@ -1,13 +1,13 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
-import { getItineraries } from './api/itineraryApi';
-import ItineraryForm from './components/ItineraryForm'; // Importa o novo componente
+import { getItineraries } from './api/itineraryApi.js';
+import ItineraryForm from './components/ItineraryForm.jsx';
+import './App.css'; // Importa o arquivo de estilo
 
 function App() {
   const [itineraries, setItineraries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false); // Novo estado para alternar a exibição
+  const [showForm, setShowForm] = useState(false);
 
   const userId = 1;
 
@@ -27,44 +27,45 @@ function App() {
   }, [userId]);
 
   const handleItineraryCreated = (newItinerary) => {
-    // Adiciona o novo roteiro à lista sem precisar recarregar
     setItineraries([...itineraries, newItinerary]);
-    setShowForm(false); // Volta para a lista
+    setShowForm(false);
   };
 
   if (loading) {
-    return <div>Carregando roteiros...</div>;
+    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '1.25rem' }}>Carregando roteiros...</div>;
   }
 
   if (error) {
-    return <div>Ocorreu um erro ao carregar os dados. Verifique o console do navegador.</div>;
+    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'red', fontSize: '1.25rem' }}>Ocorreu um erro ao carregar os dados. Verifique o console do navegador.</div>;
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Meus Roteiros de Viagem</h1>
-      <button 
-        onClick={() => setShowForm(!showForm)}
-        style={{ padding: '10px', marginBottom: '20px', cursor: 'pointer' }}
-      >
-        {showForm ? 'Voltar para a lista' : 'Criar Novo Roteiro'}
-      </button>
+    <div className="container">
+      <h1 className="title">Meus Roteiros de Viagem</h1>
+      <div className="button-container">
+        <button 
+          onClick={() => setShowForm(!showForm)}
+          className="main-button"
+        >
+          {showForm ? 'Voltar para a lista' : 'Criar Novo Roteiro'}
+        </button>
+      </div>
 
       {showForm ? (
         <ItineraryForm onItineraryCreated={handleItineraryCreated} userId={userId} />
       ) : (
         itineraries.length === 0 ? (
-          <p>Nenhum roteiro encontrado. Que tal criar um novo?</p>
+          <p className="empty-message">Nenhum roteiro encontrado. Que tal criar um novo?</p>
         ) : (
-          <ul>
+          <div className="list-container">
             {itineraries.map(itinerary => (
-              <li key={itinerary.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+              <div key={itinerary.id} className="list-item">
                 <h3>{itinerary.name}</h3>
-                <p>Destino: {itinerary.destination}</p>
-                <p>De: {itinerary.startDate} até: {itinerary.endDate}</p>
-              </li>
+                <p>Destino: <span>{itinerary.destination}</span></p>
+                <p>De: <span>{itinerary.startDate}</span> até: <span>{itinerary.endDate}</span></p>
+              </div>
             ))}
-          </ul>
+          </div>
         )
       )}
     </div>

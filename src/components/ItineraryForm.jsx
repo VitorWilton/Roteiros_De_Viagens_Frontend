@@ -1,6 +1,6 @@
-// src/components/ItineraryForm.jsx
 import React, { useState } from 'react';
-import { createItinerary } from '../api/itineraryApi';
+import { createItinerary } from '../api/itineraryApi.js';
+import './ItineraryForm.css'; // Importa o arquivo de estilo
 
 const ItineraryForm = ({ onItineraryCreated, userId }) => {
   const [formData, setFormData] = useState({
@@ -22,9 +22,7 @@ const ItineraryForm = ({ onItineraryCreated, userId }) => {
     setError(null);
     try {
       const newItinerary = await createItinerary(formData, userId);
-      // Se a criação for bem-sucedida, chamamos a função passada pelo pai
       onItineraryCreated(newItinerary);
-      // Limpa o formulário
       setFormData({ name: '', destination: '', startDate: '', endDate: '' });
     } catch (err) {
       setError("Falha ao criar o roteiro. Verifique o console para mais detalhes.");
@@ -34,11 +32,11 @@ const ItineraryForm = ({ onItineraryCreated, userId }) => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto', backgroundColor: '#f0f0f0', borderRadius: '8px' }}>
+    <div className="form-container">
       <h2>Crie um Novo Roteiro</h2>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>Nome:</label>
+        <div>
+          <label htmlFor="name">Nome:</label>
           <input
             type="text"
             id="name"
@@ -46,11 +44,10 @@ const ItineraryForm = ({ onItineraryCreated, userId }) => {
             value={formData.name}
             onChange={handleChange}
             required
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="destination" style={{ display: 'block', marginBottom: '5px' }}>Destino:</label>
+        <div>
+          <label htmlFor="destination">Destino:</label>
           <input
             type="text"
             id="destination"
@@ -58,11 +55,10 @@ const ItineraryForm = ({ onItineraryCreated, userId }) => {
             value={formData.destination}
             onChange={handleChange}
             required
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="startDate" style={{ display: 'block', marginBottom: '5px' }}>Data de Início:</label>
+        <div>
+          <label htmlFor="startDate">Data de Início:</label>
           <input
             type="date"
             id="startDate"
@@ -70,11 +66,10 @@ const ItineraryForm = ({ onItineraryCreated, userId }) => {
             value={formData.startDate}
             onChange={handleChange}
             required
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
         </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label htmlFor="endDate" style={{ display: 'block', marginBottom: '5px' }}>Data de Fim:</label>
+        <div>
+          <label htmlFor="endDate">Data de Fim:</label>
           <input
             type="date"
             id="endDate"
@@ -82,17 +77,15 @@ const ItineraryForm = ({ onItineraryCreated, userId }) => {
             value={formData.endDate}
             onChange={handleChange}
             required
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
           />
         </div>
         <button 
           type="submit" 
           disabled={loading}
-          style={{ padding: '10px 20px', cursor: 'pointer', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}
         >
           {loading ? 'Criando...' : 'Criar Roteiro'}
         </button>
-        {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+        {error && <p className="error">{error}</p>}
       </form>
     </div>
   );
