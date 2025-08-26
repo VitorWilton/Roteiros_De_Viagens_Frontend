@@ -1,0 +1,86 @@
+.registerContainer {
+    background-color: #2a2a2a;
+    padding: 30px 40px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid #444;
+}
+
+.title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 24px;
+}
+
+.registerForm {
+    display: flex;
+    flex-direction: column; /* Coloca os elementos um embaixo do outro */
+    gap: 20px; /* Espaçamento entre os grupos do formulário */
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column; /* Coloca o label em cima do input */
+    gap: 8px; /* Espaço entre o label e o input */
+}
+
+.formGroup label {
+    font-weight: bold;
+    color: #ccc;
+}
+
+.formGroup input {
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #f0f0f0;
+    font-size: 1rem;
+}
+
+.mainButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mainButton:hover {
+  background-color: #0056b3;
+}
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.message.success {
+    background-color: #2f9e4f;
+    color: white;
+}
+
+.message.error {
+    background-color: #d6336c;
+    color: white;
+}
+
+.backLink {
+    display: block;
+    margin-bottom: 20px;
+    color: #00aaff;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: left;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}

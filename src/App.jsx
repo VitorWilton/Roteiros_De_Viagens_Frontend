@@ -1,75 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { getItineraries } from './api/itineraryApi.js';
-import ItineraryForm from './components/ItineraryForm.jsx';
-import './App.css'; // Importa o arquivo de estilo
+import React from 'react';
+// Imports do React Router para gerenciar a navegação
+import { Routes, Route, Link, Outlet } from 'react-router-dom';
 
+// Import das nossas duas novas páginas
+// Verifique este caminho, ele precisa sair da pasta 'src' e entrar em 'pages'
+import ItineraryListPage from './pages/ItineraryListPage/ItineraryListPage';
+import RegisterPage from './pages/RegisterPage';
+
+import './styles/global.css'; // Importa os estilos globais
+
+// Este é o "Layout" principal: a estrutura que se repete em todas as páginas
+function Layout() {
+    return (
+        <div className="container">
+            {/* Barra de Navegação */}
+            <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #444', paddingBottom: '15px' }}>
+                {/* Link para a página inicial */}
+                <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+                    <h1>Meus Roteiros de Viagem</h1>
+                </Link>
+                {/* Link para a página de cadastro */}
+               
+            </nav>
+
+            {/* O <Outlet> é um espaço reservado onde o conteúdo da página atual será renderizado */}
+            <main style={{ paddingTop: '20px' }}>
+                <Outlet />
+            </main>
+        </div>
+    );
+}
+
+// O componente App agora apenas define as regras de navegação
 function App() {
-  const [itineraries, setItineraries] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+    return (
+        <Routes>
+            <Route path="/" element={<Layout />}>
+                {/* Quando o URL for "/", o <Outlet> no Layout vai renderizar a ItineraryListPage */}
+                <Route index element={<ItineraryListPage />} />
 
-  const userId = 1;
-
-  const fetchItineraries = async () => {
-    try {
-      const data = await getItineraries(userId);
-      setItineraries(data);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchItineraries();
-  }, [userId]);
-
-  const handleItineraryCreated = (newItinerary) => {
-    setItineraries([...itineraries, newItinerary]);
-    setShowForm(false);
-  };
-
-  if (loading) {
-    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999', fontSize: '1.25rem' }}>Carregando roteiros...</div>;
-  }
-
-  if (error) {
-    return <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'red', fontSize: '1.25rem' }}>Ocorreu um erro ao carregar os dados. Verifique o console do navegador.</div>;
-  }
-
-  return (
-    <div className="container">
-      <h1 className="title">Meus Roteiros de Viagem</h1>
-      <div className="button-container">
-        <button 
-          onClick={() => setShowForm(!showForm)}
-          className="main-button"
-        >
-          {showForm ? 'Voltar para a lista' : 'Criar Novo Roteiro'}
-        </button>
-      </div>
-
-      {showForm ? (
-        <ItineraryForm onItineraryCreated={handleItineraryCreated} userId={userId} />
-      ) : (
-        itineraries.length === 0 ? (
-          <p className="empty-message">Nenhum roteiro encontrado. Que tal criar um novo?</p>
-        ) : (
-          <div className="list-container">
-            {itineraries.map(itinerary => (
-              <div key={itinerary.id} className="list-item">
-                <h3>{itinerary.name}</h3>
-                <p>Destino: <span>{itinerary.destination}</span></p>
-                <p>De: <span>{itinerary.startDate}</span> até: <span>{itinerary.endDate}</span></p>
-              </div>
-            ))}
-          </div>
-        )
-      )}
-    </div>
-  );
+                {/* Quando o URL for "/register", o <Outlet> no Layout vai renderizar a RegisterPage */}
+                <Route path="register" element={<RegisterPage />} />
+            </Route>
+        </Routes>
+    );
 }
 
 export default App;
